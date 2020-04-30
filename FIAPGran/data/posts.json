@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "img" : "https://picsum.photos/id/100/300/200",
+        "descricao" : "Uma bela tarde na praia!",
+        "likes" : 0,
+        "user" : {
+            "img" : "https://picsum.photos/id/1025/80/80",
+            "nome" : "Doguinho"
+        }
+    },
+    {
+        "id": 2,
+        "img" : "https://picsum.photos/id/1019/300/200",
+        "descricao" : "Uma tarde chuvosa!",
+        "likes" : 0,
+        "user" : {
+            "img" : "https://picsum.photos/id/1025/80/80",
+            "nome" : "Doguinho"
+        }
+    },
+    {
+        "id": 3,
+        "img" : "https://picsum.photos/id/102/300/200",
+        "descricao" : "Framboesas",
+        "likes" : 0,
+        "user" : {
+            "img" : "https://picsum.photos/id/1025/80/80",
+            "nome" : "Doguinho"
+        }
+    }    
+]
