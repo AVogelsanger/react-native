@@ -13,6 +13,9 @@ import {
 
 import style from './StyleSheet'
 
+import colors from '../../../config/colors.json'
+
+import config from '../../../app.json'
 
 export default class App extends React.Component {
     render() {
@@ -21,12 +24,12 @@ export default class App extends React.Component {
           <StatusBar backgroundColor='#ED145B'/>
 
             <FontAwesomeIcon
-            color='#ED145B' 
+            color={ colors.magenta } 
             icon={ faImage } 
             size={32}
             style={{ marginRight : 8 }}/>
 
-            <Text style={{ fontSize : 18, fontWeight : 'bold' }}>FIAPGran</Text>
+            <Text style={ config.displayName }>FIAPGran</Text>
         </View>
       )
     }

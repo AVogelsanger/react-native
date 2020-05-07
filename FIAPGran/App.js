@@ -2,59 +2,34 @@ import React from 'react'
 
 import {
   FlatList,
-  Image,
-  Text,
   View
 } from 'react-native'
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { 
-  faHeart as farHeart
-} from '@fortawesome/free-regular-svg-icons'
-
-import { 
-  faHeart as fasHeart
-} from '@fortawesome/free-solid-svg-icons'
-
 import Toolbar from './ComponentesPersonalizados/ui/toolbar/Toolbar'
+
+import Post from './ComponentesPersonalizados/post/Post'
 
 import posts from './data/posts.json'
 
+import style from './StyleSheet'
+
 export default class App extends React.Component {
+
+  state = {
+    posts : posts
+  }
+
+
   render() {
     return(
-      <View style={{ flex : 1 }}>
+      <View style={ style.container }>
         <Toolbar />
 
         <FlatList 
-         data={ posts }
-         renderItem={ ({item}) => (
-           <View style={{ marginBottom : 24 }}>
-             <View style={{ alignItems : 'center', flexDirection : 'row', padding : 8 }}>
-               <Image 
-                  source={{ uri : item.user.img }}
-                  style={{ borderRadius : 15, height : 30, marginRight : 8, width : 30 }}/>
-
-                  <Text style={{ fontWeight : 'bold' }}>{ item.user.nome } </Text>
-             </View>
-
-              <Image 
-              source={{ uri : item.img }}
-              style={{ height : 250 }}/>
-
-              <Text style={{ padding : 8 }}>{ item.descricao }</Text>
-
-              <View style={{ flexDirection : 'row', paddingHorizontal : 8 }}>
-                <FontAwesomeIcon 
-                  icon={ farHeart }
-                  size={ 24 }
-                  style={{ marginRight : 8 }}
-                  />
-                <Text>Curtidas: { item.likes }</Text>
-              </View>
-
-           </View>
-          )}/>
+         data={ this.state.posts }
+         renderItem={ ({ item }) => (<Post item={ item }/>) } 
+         keyExtractor={ (item) => item.id.toString() }
+        />
       </View>
     )
   }
