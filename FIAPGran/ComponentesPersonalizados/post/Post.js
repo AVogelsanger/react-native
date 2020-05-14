@@ -28,7 +28,8 @@ export default class Post extends React.Component{
                 </Text>
 
                 <PostFooter 
-                    item={ this.props.item }/>
+                    item={ this.props.item }
+                    onComment={ this.props.onComment }/>
             </View>      
         )
     }

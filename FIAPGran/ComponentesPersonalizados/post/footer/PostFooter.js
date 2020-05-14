@@ -1,16 +1,21 @@
 import React from 'react'
 
 import {
+    FlatList,
     Text,
+    TextInput,
     TouchableOpacity,
     View
 } from 'react-native'
+
+import Comment from '../../comment/Comment'
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 import { 
    faComment as farComment, 
-  faHeart as farHeart
+  faHeart as farHeart,
+  faPaperPlane as farPaperPlane
 } from '@fortawesome/free-regular-svg-icons'
 
 import {
@@ -23,7 +28,9 @@ import color from '../../../config/colors.json'
 export default class PostFooter extends React.Component {
 
     state = {
-        curtido : this.props.item.curtidoPorMim
+        comentario : '',
+        curtido : this.props.item.curtidoPorMim,
+        showComment : false
     }
 
     curtir = () => {
@@ -41,28 +48,66 @@ export default class PostFooter extends React.Component {
         }
     }
 
+    comentar = () => {
+        if( this.state.comentario.trim().length == 0){
+            alert('Informe o comentario')
+            return
+        }
+        this.props.onComment( this.props.item, this.state.comentario )
+
+        this.setState( { comentario : '' })
+    }
+
     render() {
 
         let iconLike = (this.state.curtido) ? fasHeart : farHeart
         let colorLike = (this.state.curtido) ? color.vermelho : color.preto
 
         return (
-            <View style={ style.container }>
-                <TouchableOpacity onPress={ _ => this.curtir() }>
+            <View>
+                <View style={ style.container }>
+                    <TouchableOpacity 
+                        onPress={ _ => this.setState({ showComment : ! this.state.showComment }) }>
 
-                    <FontAwesomeIcon
-                        icon={ farComment }
-                        size={ 24 }
-                        style={ style.iconComment } />
+                        <FontAwesomeIcon
+                            icon={ farComment }
+                            size={ 24 }
+                            style={ style.iconComment } />
+                    </TouchableOpacity>        
+                    <TouchableOpacity 
+                        onPress={ _ => this.curtir() }>
+                        <FontAwesomeIcon 
+                            color={ colorLike }
+                            icon={ iconLike }
+                            size={ 24 }
+                            style={ style.iconLike }/>
+                    </TouchableOpacity>
 
-                    <FontAwesomeIcon 
-                        color={ colorLike }
-                        icon={ iconLike }
-                        size={ 24 }
-                        style={ style.iconLike }/>
-                </TouchableOpacity>
+                    <Text>Curtidas: { this.props.item.likes }</Text>
+                </View>
 
-                <Text>Curtidas: { this.props.item.likes }</Text>
+                { this.state.showComment && (
+                    <View style={ style.container }>
+                        <TextInput
+                            onChangeText={(comentario) => this.setState({ comentario })}
+                            placeholder = 'Digite seu comentário... '
+                            style={ style.inputComment }
+                            value={ this.state.comentario }/>
+
+                        <TouchableOpacity
+                                onPress={ _ => this.comentar() }>
+                            <FontAwesomeIcon
+                                icon={ farPaperPlane }
+                                size={ 24 }
+                                style={ style.iconLike }/>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                <FlatList
+                    data={ this.props.item.comentarios }
+                    renderItem={ ({item}) => <Comment item={item }/> }
+                    keyExtractor={ (item) => item.id.toString() }/>
             </View>
         )
     }

@@ -19,6 +19,22 @@ export default class App extends React.Component {
     posts : posts
   }
 
+  onComment = ( post, comentario ) => {
+
+    const posts = this.state.posts
+    const index = posts.indexOf( post )
+
+    post.comentarios.push({
+      id : post.comentarios.length + 1,
+      nome : "Meu usuário",
+      texto : comentario
+    })
+
+    posts[index] = post
+
+    this.setState({ posts })
+
+  }
 
   render() {
     return(
@@ -27,7 +43,11 @@ export default class App extends React.Component {
 
         <FlatList 
          data={ this.state.posts }
-         renderItem={ ({ item }) => (<Post item={ item }/>) } 
+         renderItem={ ({ item }) => (
+          <Post 
+            item={ item }
+            onComment={ (post, comentario) => this.onComment(post, comentario) } />
+         ) } 
          keyExtractor={ (item) => item.id.toString() }
         />
       </View>

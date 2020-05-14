@@ -8,7 +8,8 @@
         "user" : {
             "img" : "https://picsum.photos/id/1025/80/80",
             "nome" : "Doguinho"
-        }
+        },
+        "comentarios" : []
     },
     {
         "id": 2,
@@ -19,7 +20,19 @@
         "user" : {
             "img" : "https://picsum.photos/id/1025/80/80",
             "nome" : "Doguinho"
-        }
+        },
+        "comentarios" : [
+            {
+                "id" : 1,
+                "nome" : "Hermenegildo",
+                "texto" : "Que lugar lindo."
+            },
+            {
+                "id" : 2,
+                "nome" : "Fulig",
+                "texto" : "Isso me lembra caipirinha, cervejinha..."
+            }
+        ]
     },
     {
         "id": 3,
@@ -30,6 +43,7 @@
         "user" : {
             "img" : "https://picsum.photos/id/1025/80/80",
             "nome" : "Doguinho"
-        }
+        },
+        "comentarios" : []
     }    
 ]
