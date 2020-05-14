@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   Image, 
-  Button
+  Button,
+  TouchableOpacity
 } from 'react-native';
 
 import imgP0 from './assets/img/p0.png'
@@ -16,6 +17,21 @@ import imgP5 from './assets/img/p5.png'
 import imgP6 from './assets/img/p6.png'
 
 export default class App extends React.Component {
+
+  arrayImagens = [
+    imgP0,
+    imgP1,
+    imgP2,
+    imgP3,
+    imgP4,
+    imgP5,
+    imgP6
+  ]
+
+  state = {
+    posicaoAtual : 0
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -26,8 +42,17 @@ export default class App extends React.Component {
 
         <View style={{ alignSelf : 'center', padding : 15}}>
           <Image 
-            source={ imgP0 }/>
+            source={ this.arrayImagens[this.state.posicaoAtual] }/>
         </View>
+
+        <TouchableOpacity>
+          <Text>Imagem anterior</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Text>Próxima imagem</Text>
+        </TouchableOpacity>
+
 
         <View style={{ padding : 16 }}>
           <Button
@@ -54,15 +79,7 @@ const styles = StyleSheet.create({
   }
 })
 
-var arrayImagens = [
-  imgP0,
-  imgP1,
-  imgP2,
-  imgP3,
-  imgP4,
-  imgP5,
-  imgP6
-]
+
 
 function trocar() {
   for (let i = 0; i < arrayImagens.length; i++) {
