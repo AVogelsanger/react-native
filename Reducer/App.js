@@ -23,7 +23,7 @@ const reducer = (state, action) => {
 const App = () => {
 
   let [contador, dispatch] = useReducer(reducer, 0);
-
+  vscode://vscode.github-authentication/did-authenticate?windowId=1&code=01317ae91223d9fb743f&state=cf016554-d15a-4e41-928c-24a6ab442504
   return(
     <SafeAreaView>
       <Text>Número de cliques: {contador}</Text>
