@@ -1,38 +1,108 @@
-import React from 'react';
+import React,
+{
+    useState
+} from 'react';
 
 import {
     Button,
     SafeAreaView,
-    StyleSheet    
+    StyleSheet,
+    Text,
+    View
 } from 'react-native';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLock as fasLock } from '@fortawesome/free-solid-svg-icons';
+import InputEmail from '../components/Input/InputEmail';
+import InputUsername from '../components/Input/InputUserName';
+import InputSenha from '../components/Input/InputSenha';
 
-import { Input } from "react-native-elements";
-import InputUserName from "../components/Input/InputUserName";
-import InputPassword from "../components/Input/InputPassword";
-import InputEmail from "../components/Input/InputEmail";
+import { insert, read } from '../DB';
 
 const Cadastro = (props) => {
-    return(
-        <SafeAreaView style={ styles.container }>
-            <InputUserName />
 
-            <InputEmail />
+    let [username, setUsername] = useState('');
+    let [email, setEmail] = useState('');
+    let [password, setPassword] = useState('');
+    let [confirmPassword, setConfirmPassword] = useState('');
+    let [errors, setErrors] = useState([]);
 
-            <InputPassword />
+    const validar = () => {
+        const newErrors = [];
 
-            <Input
-                leftIcon={
-                    <FontAwesomeIcon 
-                    color="#333"
-                    icon={ fasLock }
-                    size={ 24 }/>
+        if ( username.trim().length < 6 ) {
+            newErrors.push('Usuário não pode ter menos que 06 caracteres!');
+        }
+
+        const regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+        if ( ! regexEmail.test(email) ) {
+            newErrors.push('E-mail informado não é válido!');
+        }
+
+        const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        if ( !regexPassword.test(password) ) {
+            newErrors.push('A senha precisa ter: maiúsculas, minúsculas e números!');
+        }
+
+        if ( password !== confirmPassword ) {
+            newErrors.push('Senhas não são idênticas!');
+        }
+
+        setErrors( newErrors );
+
+        return newErrors.length === 0 ;
+    }
+
+    const handleSalvar = () => {
+        if ( validar() ) {
+            read(username, (errors, data) => {
+                if ( errors ) {
+                    alert('Ocorreu algum erro ao buscar no banco de dados!');
+                } else if ( data === null ) {
+                    insert(username, { password, email }, (err) => {
+                        if ( err ) {
+                            alert('Erro ao inserir no banco de dados!');
+                        } else {
+                            props.navigation.pop();
+                        }
+                    })
+                } else {
+                    alert('Usuário já existente no banco de dados!');
                 }
-                placeholder="Confirme sua senha:"/>
+            });
+        }
+    }
 
-            <Button color="#ed145b" title="Login" />
+    return (
+        <SafeAreaView style={ styles.container }>
+            <InputUsername 
+                onChangeText={ (txt) => setUsername(txt) }
+                value={ username } />
+
+            <InputEmail 
+                onChangeText={ (txt) => setEmail(txt) }
+                value={ email } />
+
+            <InputSenha
+                onChangeText={ (txt) => setPassword(txt) }
+                value={ password } />
+
+            <InputSenha 
+                confirm 
+                onChangeText={ (txt) => setConfirmPassword(txt) }
+                value={ confirmPassword } />
+
+            <Button 
+                color="#ed145b" 
+                onPress={ () => handleSalvar() }
+                title="Salvar" />
+
+            { errors.length > 0 &&
+                <View style={ styles.containerErrors }>
+                    {errors.map( (erro, index) => (
+                        <Text key={index} style={ styles.error }>{erro}</Text> 
+                    ))}
+                </View>
+            }
+
         </SafeAreaView>
     );
 };
@@ -42,5 +112,13 @@ export default Cadastro;
 const styles = StyleSheet.create({
     container : {
         padding : 16
+    },
+    containerErrors : {
+        backgroundColor : '#DDD',
+        marginTop : 8,
+        padding : 16
+    },
+    error : {
+        marginBottom : 8
     }
 });

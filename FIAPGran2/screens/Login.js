@@ -1,4 +1,4 @@
-import React,
+import React, 
 {
     useCallback,
     useState
@@ -16,35 +16,69 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCamera as fasCamera } from '@fortawesome/free-solid-svg-icons';
 
-import InputUserName from "../components/Input/InputUserName";
-import InputPassword from "../components/Input/InputPassword";
+import InputUsername from '../components/Input/InputUserName';
+import InputSenha from '../components/Input/InputSenha';
+
+import { read } from '../DB';
 
 const Login = (props) => {
 
-    let [username, setUserName] = useState('');
+    let [username, setUsername] = useState('');
     let [password, setPassword] = useState('');
+
+    const handleLogin = () => {
+        if ( username.trim().length > 0 && password.length > 0 ) {
+            read(username, (errors, data) => {
+                if ( errors ) {
+                    alert('Não foi possível buscar no banco de dados!');
+                } else if ( data === null ) {
+                    alert('Usuário não encontrado!');
+                } else {
+                    const json = JSON.parse(data);
+                    if ( json.password === password ) {
+                        props.navigation.navigate('Main');
+                    } else {
+                        alert('Senha inválida!');
+                    }
+                }
+            });
+
+            return;
+        }
+
+        alert('Informe os campos corretamente!');
+    }
 
     const handleCadastro = useCallback(() => {
         props.navigation.navigate('Cadastro');
     }, []);
-    return(
+
+    return (
         <SafeAreaView style={ styles.container }>
-            <View style={ styles.logotipo}>
-                <FontAwesomeIcon 
-                    color="#ed145b"
+            <View style={ styles.logotipo }>
+                <FontAwesomeIcon
+                    color="#ed145b" 
                     icon={ fasCamera }
-                    size={ 128 }/>
-                <Text style={ styles.logotipoTexto }>FIAPGRAN 2</Text>
+                    size={ 128 } />
+                <Text style={ styles.logotipoTexto }>FIAPGram 2</Text>
             </View>
+            
 
-            <InputUserName />
+            <InputUsername
+                onChangeText={ (txt) => setUsername(txt) }
+                value={ username } />
 
-            <InputPassword />
+            <InputSenha 
+                onChangeText={ (txt) => setPassword(txt) }
+                value={ password } />
 
-            <Button color="#ed145b" title="Login" />
+            <Button 
+                color="#ed145b" 
+                onPress={ () => handleLogin() }
+                title="Login" />
 
             <TouchableOpacity 
-                onPress={useCallback(() => handleCadastro(), [])}
+                onPress={ useCallback(() => handleCadastro(), []) }
                 style={ styles.btnCadastro }>
                 <Text>Cadastre-se</Text>
             </TouchableOpacity>
