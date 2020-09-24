@@ -7,29 +7,33 @@ import Cadastro from './screens/Cadastro';
 import Login from './screens/Login';
 import Main from './screens/Main';
 
+import { UserProvider } from './context/userContext';
+
 const Stack = createStackNavigator();
 
 const App = (props) => {
   return ( 
-    <NavigationContainer>
-      <Stack.Navigator>
-        
-        <Stack.Screen 
-          component={ Login } 
-          name="Login"
-          options={{ headerShown : false }}/>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          
+          <Stack.Screen 
+            component={ Login } 
+            name="Login"
+            options={{ headerShown : false }}/>
 
-        <Stack.Screen 
-          component={ Cadastro }
-          name="Cadastro"/>
+          <Stack.Screen 
+            component={ Cadastro }
+            name="Cadastro"/>
 
-        <Stack.Screen 
-          component={ Main }
-          name="Main"
-          options={{ title : "FIAPGram 2" }}/>
+          <Stack.Screen 
+            component={ Main }
+            name="Main"
+            options={{ title : "FIAPGram 2" }}/>
 
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 };
 

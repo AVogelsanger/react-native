@@ -1,7 +1,7 @@
 import React, {
     createContext,
-    useReducer,
-    useEffect
+    useEffect,
+    useReducer
 } from 'react';
 
 const ACTIONS = {
@@ -17,6 +17,41 @@ const reducer = ( state, action ) => {
     switch ( action.type ) {
         case ACTIONS.RELOAD_FROM_API : {
             return action.payload;
+        }
+        case ACTIONS.LIKE_POST : {
+            let userLogado = action.payload.userLogado;
+            let postID = action.payload.postID;
+            let post = state.find((item)=> item.id === postID);
+            if ( post ) {
+                let estaCurtido = post.curtidas.indexOf(userLogado) > -1;
+                if ( estaCurtido ) {
+                    post.curtidas = post.curtidas.filter((item) => item != userLogado );
+                } else {
+                    post.curtidas.push(userLogado);
+                }
+            }
+            return [...state];
+        }
+        case ACTIONS.INSERT_POST_COMMENT : {
+            let userLogado = action.payload.userLogado;
+            let postID = action.payload.postID;
+            let post = state.find((item) => item.id === postID);
+            if ( post ) {
+                post.comentarios.push({
+                    id : post.comentarios.length + 1,
+                    username : userLogado,
+                    comentario
+                });
+            }
+            return [...state];
+        }
+        case ACTIONS.REMOVE_POST_COMMENT : {
+            let { postID, commentID } = action.payload;
+            let post = state.find((item) => item.id === postID);
+            if ( post ) {
+                post.comentarios = post.comentarios.filter((c) => c.id != commentID);
+            }
+            return [...state]
         }
     }
 }

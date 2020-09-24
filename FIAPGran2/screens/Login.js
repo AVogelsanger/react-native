@@ -1,7 +1,8 @@
 import React, 
 {
     useCallback,
-    useState
+    useState,
+    useContext
 } from 'react';
 
 import {
@@ -21,7 +22,11 @@ import InputSenha from '../components/Input/InputSenha';
 
 import { read } from '../DB';
 
+import UserContext from '../context/userContext';
+
 const Login = (props) => {
+
+    const {setUserLogado} = useContext(UserContext);
 
     let [username, setUsername] = useState('');
     let [password, setPassword] = useState('');
@@ -37,6 +42,7 @@ const Login = (props) => {
                     const json = JSON.parse(data);
                     if ( json.password === password ) {
                         props.navigation.navigate('Main');
+                        setUserLogado(username);
                     } else {
                         alert('Senha inválida!');
                     }

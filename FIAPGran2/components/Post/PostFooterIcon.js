@@ -13,7 +13,8 @@ const PostFooterIcon = (props) => {
         <TouchableOpacity 
             onPress={ props.onPress }
             style={ styles.icon }>
-                <FontAwesomeIcon 
+                <FontAwesomeIcon
+                    color={ props.color ?? '#000'} 
                     icon={ props.icon }
                     size={ 32 }/>
         </TouchableOpacity>
